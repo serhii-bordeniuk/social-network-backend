@@ -6,11 +6,23 @@ const Post = require("../models/post");
 const handleCatchError = require("../util/error");
 
 exports.getPosts = (req, res, next) => {
+    const currentPage = req.query.page || 1;
+    const perPage = 2;
+    let totalItems;
     Post.find()
+        .countDocuments()
+        .then((count) => {
+            totalItems = count;
+            return Post.find()
+                .skip((currentPage - 1) * perPage)
+                .limit(perPage)
+            ;
+        })
         .then((posts) => {
             res.status(200).json({
                 message: "Fetched posts successfully",
                 posts: posts,
+                totalItems: totalItems
             });
         })
         .catch((err) => {
@@ -125,11 +137,12 @@ exports.deletePost = (req, res, next) => {
                 throw error;
             }
             clearImage(post.imageUrl);
-            return Post.findByIdAndRemove(postId)
-        }).then(result => {
+            return Post.findByIdAndRemove(postId);
+        })
+        .then((result) => {
             res.status(200).json({
-                message: 'Deleted post'
-            })
+                message: "Deleted post",
+            });
         })
         .catch((err) => handleCatchError(err, next));
 };
