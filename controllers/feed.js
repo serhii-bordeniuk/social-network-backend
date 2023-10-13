@@ -15,14 +15,13 @@ exports.getPosts = (req, res, next) => {
             totalItems = count;
             return Post.find()
                 .skip((currentPage - 1) * perPage)
-                .limit(perPage)
-            ;
+                .limit(perPage);
         })
         .then((posts) => {
             res.status(200).json({
                 message: "Fetched posts successfully",
                 posts: posts,
-                totalItems: totalItems
+                totalItems: totalItems,
             });
         })
         .catch((err) => {
