@@ -14,9 +14,9 @@ router.put(
             .withMessage("Please, enter a valid email.")
             .custom(async (value, { req }) => {
                 const userDoc = await User.findOne({ email: value });
-              if (userDoc) {
-                return Promsie.reject("E-Mail address already exists!");
-              }
+                if (userDoc) {
+                    return Promsie.reject("E-Mail address already exists!");
+                }
             })
             .normalizeEmail(),
         body("password").trim().isLength({ min: 5 }),
@@ -24,5 +24,7 @@ router.put(
     ],
     authController.signup
 );
+
+router.post("/login", authController.login);
 
 module.exports = router;
