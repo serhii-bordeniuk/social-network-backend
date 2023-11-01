@@ -59,6 +59,10 @@ mongoose
         "mongodb+srv://serhii:1234567890@cluster0.vo6inbk.mongodb.net/messages?retryWrites=true&w=majority"
     )
     .then((result) => {
-        app.listen(8080);
+        const server = app.listen(8080);
+        const io = require("./socket").init(server);
+        io.on("connection", (socket) => {
+            console.log("Client Connected");
+        });
     })
     .catch((err) => console.log(err));
