@@ -78,7 +78,7 @@ app.use(
     })
 );
 
-app.use((error, req, res, next) => {
+app.use((error, req, res, next) => { 
     console.log(error);
     const status = error.statusCode || 500;
     const message = error.message;
@@ -96,6 +96,6 @@ mongoose
     .catch((err) => console.log(err));
 
 const clearImage = (filePath) => {
-    filePath = path.join(__dirname, "..", filePath);
+    filePath = path.join(__dirname, ".", filePath);
     fs.unlink(filePath, (err) => console.log(err));
 };
